@@ -1,5 +1,6 @@
 package linklist;
 
+import java.security.Principal;
 import java.util.Stack;
 
 /**
@@ -9,36 +10,52 @@ public class SingleLinkedListDemo {
 
     public static void main(String[] args) {
         SingleLinkedList singleLinkedList = new SingleLinkedList ();
-        singleLinkedList.add (new HeroNode (1, "宋江", "及时雨"));
-        singleLinkedList.add (new HeroNode (3, "吴用", "智多星"));
-        singleLinkedList.add (new HeroNode (2, "卢俊义", "玉麒麟"));
-        singleLinkedList.add (new HeroNode (4, "林冲", "豹子头"));
+//        singleLinkedList.add (new HeroNode (1, "宋江", "及时雨"));
+//        singleLinkedList.add (new HeroNode (3, "吴用", "智多星"));
+//        singleLinkedList.add (new HeroNode (2, "卢俊义", "玉麒麟"));
+//        singleLinkedList.add (new HeroNode (4, "林冲", "豹子头"));
 
-//        singleLinkedList.addByOrder (new HeroNode (1, "宋江", "及时雨"));
-//        singleLinkedList.addByOrder (new HeroNode (4, "林冲", "豹子头"));
-//        singleLinkedList.addByOrder (new HeroNode (2, "卢俊义", "玉麒麟"));
-//        singleLinkedList.addByOrder (new HeroNode (3, "吴用", "智多星"));
+        singleLinkedList.addByOrder (new HeroNode (1, "宋江", "及时雨"));
+        singleLinkedList.addByOrder (new HeroNode (7, "林冲", "豹子头"));
+        singleLinkedList.addByOrder (new HeroNode (4, "卢俊义", "玉麒麟"));
+        singleLinkedList.addByOrder (new HeroNode (5, "吴用", "智多星"));
 
-        singleLinkedList.update (new HeroNode (4, "关羽", "美髯公"));
-        singleLinkedList.update (new HeroNode (5, "张飞", "阉人"));
+        singleLinkedList.update (new HeroNode (7, "关羽", "美髯公"));
+//        singleLinkedList.update (new HeroNode (8, "张飞", "阉人"));
 
 //        singleLinkedList.delete (1);
         singleLinkedList.foreach ();
+        System.out.println ();
 
 //        System.out.println (getLength (new HeroNode (1, "宋江", "及时雨")));
 
-        HeroNode head = singleLinkedList.getHead ();
-        System.out.println ("有效节点的个数：" + getLength (head));
+//        HeroNode head = singleLinkedList.getHead ();
+//        System.out.println ("有效节点的个数：" + getLength (head));
+//
+//        System.out.println ("倒数第3个元素：" + findLastNode (head, 3));
+//
+//        HeroNode reverse = reverse (head);
+//        SingleLinkedList reverseList = new SingleLinkedList ();
+//        reverseList.setHead (reverse);
+//        reverseList.foreach ();
+//
+//        System.out.println ("反向遍历：");
+//        reverseForeach (reverse);
+//        System.out.println ();
 
-        System.out.println ("倒数第3个元素：" + findLastNode (head, 3));
 
-        HeroNode reverse = reverse (head);
-        SingleLinkedList reverseList = new SingleLinkedList ();
-        reverseList.setHead (reverse);
-        reverseList.foreach ();
+        SingleLinkedList singleLinkedList2 = new SingleLinkedList ();
+        singleLinkedList2.addByOrder (new HeroNode (2, "刘备","以德服人"));
+        singleLinkedList2.addByOrder (new HeroNode (8, "张飞","咆哮"));
+        singleLinkedList2.addByOrder (new HeroNode (6, "赵云","浑身是胆"));
+        singleLinkedList2.foreach ();
 
         System.out.println ();
-        reverseForeach(reverse);
+        //合并
+        HeroNode heroNode = mergeLinkedList (singleLinkedList.getHead (), singleLinkedList2.getHead ());
+        singleLinkedList2.setHead (heroNode);
+        singleLinkedList2.foreach ();
+
     }
 
 //    /**
@@ -147,18 +164,79 @@ public class SingleLinkedListDemo {
             cur = cur.next;
         }
         int size = stack.size ();
-        for (int i = 0; i <size ; i++) {
+        for (int i = 0; i < size; i++) {
             System.out.println (stack.pop ());
         }
     }
 
     /**
      * 合并两个有序的单项列表，合并之后链表依然有序
+     *
      * @return
      */
-    public static HeroNode mergeLinkedList (HeroNode node){
+    public static HeroNode mergeLinkedList(HeroNode node1, HeroNode node2) {
+        if (node1.next == null && node2.next == null) {
+            return null;
+        }
+        if (node1.next == null) {
+            return node2;
+        }
+        if (node2.next == null) {
+            return node1;
+        }
 
-        return null;
+        // 保存原链表下一个节点结构
+        HeroNode cur1 = node1.next;
+        HeroNode cur2 = node2.next;
+
+        // 指针
+        HeroNode next1 = null;
+        HeroNode next2 = null;
+
+        HeroNode newLinkedList = new HeroNode (0, "", "");
+        boolean flag = false;
+        while (true) {
+            if (cur1 == null) {
+                flag = true;
+                break;
+            }
+            if (cur2 == null) {
+                flag = false;
+                break;
+            }
+            // 移动指针
+            next1 = cur1.next;
+            next2 = cur2.next;
+
+            //如果编号相等，直接返回空
+            if (cur1.no == cur2.no) {
+                return null;
+            }
+
+            if (cur1.no < cur2.no) {
+                // cur1链表编号小于cur2链表编号，把较小的（cur1）的结点加入新链表（newLinkedList）首节点，
+                // 再给cur1赋上原链表下一个节点的链表结构值，方便移动该（cur1）的指针
+                cur1.next = newLinkedList.next;
+                newLinkedList.next = cur1;
+                cur1 = next1;
+            } else {
+                cur2.next = newLinkedList.next;
+                newLinkedList.next = cur2;
+                cur2 = next2;
+            }
+        }
+
+        if (flag) {
+            // cur1 遍历结束，cur2 拼接入newLinkedList结尾
+            cur2.next = newLinkedList.next;
+            newLinkedList.next = cur2;
+        } else {
+            // cur2 遍历结束，把cur1 拼接入newLinkedList结尾
+            cur1.next = newLinkedList.next;
+            newLinkedList.next = cur1;
+        }
+        //最后再反转链表
+        return reverse(newLinkedList);
     }
 }
 
