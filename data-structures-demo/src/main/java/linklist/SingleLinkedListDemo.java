@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.Stack;
 
 /**
+ * 尚硅谷
  * 单项列表
  */
 public class SingleLinkedListDemo {
