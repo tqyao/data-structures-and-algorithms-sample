@@ -1,14 +1,20 @@
 package linklist;
 
+import javax.swing.*;
+import java.util.Arrays;
+
 /**
+ * http://www.cxyzjd.com/article/qq_42435377/107475525
  * 约瑟夫问题
  * 单项环形链表
  */
 public class CycleLinkedList {
 
     public static void main(String[] args) {
-        CycleLinkedList cycleLinkedList = new CycleLinkedList (3);
+        CycleLinkedList cycleLinkedList = new CycleLinkedList (5);
         cycleLinkedList.foreach ();
+        System.out.println ();
+        cycleLinkedList.josephu (2,3);
 
     }
 
@@ -44,19 +50,52 @@ public class CycleLinkedList {
      * 约瑟夫问题：设有n个人围成一圈，从第k个人开始报数m下，数到m的人出列，他的下一个人继续数，数到m的人出列…以此类推，
      * 直到所有人出列，要求 按出列的顺序用编号形成一个序列。
      *
-     * @param k 从第几个开始
-     * @param m 间隔，数m个出圈
+     * @param startNo    从第几个开始
+     * @param intervalNo 间隔，数m个出圈
      */
-    public void josephu(int k, int m) {
-        // 存储环链出队数据
-        int[] array = new int[length - 1];
+    public void josephu(int startNo, int intervalNo) {
 
-        Node cur = first;
-        //计算从哪个节点开始数
-        for (int i = 1; i < k; i++) {
-            cur = cur.next;
+        if (first == null) {
+            System.out.println ("链表为空");
+            return;
         }
 
+        if (startNo < 0 || intervalNo < 0) {
+            System.out.println ("k, m 不能小于0");
+            return;
+        }
+
+        // 存储环链出队数据
+        int[] array = new int[length];
+        // 如果环长4，startNo = 5 ，可以看作从第1开始
+        startNo = startNo % length;
+
+        // 找到人为意义的尾节点（实际是找到first 指针的前一个节点）
+        Node temp = first;
+        while (temp.next != first) {
+            temp = temp.next;
+        }
+
+        // 从第 startNo 开始数
+        for (int i = 1; i < startNo; i++) {
+            temp = temp.next;
+            first = first.next;
+        }
+
+
+        // 环链表有多长就数多少次，目的是全部节点出圈
+        for (int i = 0; i < length; i++) {
+            // 每数一次 first、temp向后移动 intervalNo 个跨度
+            for (int j = 1; j < intervalNo; j++) {
+                first = first.next;
+                temp = temp.next;
+            }
+            array[i] = (int) first.data;
+            temp.next = first.next;
+            first = first.next;
+        }
+
+        Arrays.stream (array).forEach (System.out::println);
 
 
     }
