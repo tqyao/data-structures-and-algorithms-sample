@@ -6,6 +6,7 @@ import sun.security.jca.GetInstance;
 import java.util.ArrayList;
 
 /**
+ * todo:多位数运算结果出错
  * 使用栈实现计算器(中缀表达式)。
  * 实现思路：
  * 1. 通过 index （索引）遍历所给字符串的每个字符。
