@@ -1,6 +1,7 @@
 package recurison;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class MiGong {
 
@@ -32,8 +33,9 @@ public class MiGong {
             System.out.println ();
         }
 
-        passWay (mg, 1, 1);
-
+//        passWay (mg, 1, 1);
+        int[][] stepStrategy = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+        passWay2 (mg, 1, 1, 6, 5, stepStrategy);
         System.out.println ();
         for (int i = 0; i < mg.length; i++) {
             for (int j = 0; j < mg[0].length; j++) {
@@ -87,6 +89,7 @@ public class MiGong {
     /**
      * 获取步长
      * 如果全为3，表示没有找到出口的路径，则返回-1
+     *
      * @param mg
      * @return
      */
@@ -100,6 +103,35 @@ public class MiGong {
             }
         }
         return step == 0 ? -1 : step;
+    }
+
+    /**
+     * 找迷宫出口
+     * 起始位置：row = 1， column = 1
+     * 终点位置：row = 6， column = 5
+     *
+     * @param mg
+     * @param startX
+     * @param startY
+     * @return
+     */
+    public static boolean passWay2(int[][] mg, int startX, int startY, int endX, int endY, int[][] stepStrategy) {
+        if (mg[endX][endY] == 2) {
+            return true;
+        }
+        if (mg[startX][endX] == 0) {
+            mg[startX][endX] = 2;
+
+            for (int i = 0; i < stepStrategy.length; i++) {
+                passWay2 (mg, startX + stepStrategy[i][0],
+                        startY + stepStrategy[i][2], endX, endY, stepStrategy);
+            }
+            return true;
+        } else {
+            mg[startX][endX] = 3;
+            return false;
+        }
+
     }
 
 }
