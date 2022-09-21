@@ -1,10 +1,5 @@
 package stack;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import sun.security.jca.GetInstance;
-
-import java.util.ArrayList;
-
 /**
  * todo:多位数运算结果出错
  * 使用栈实现计算器(中缀表达式)。
@@ -18,7 +13,7 @@ import java.util.ArrayList;
  * 4. 当表达式扫描完毕后，按顺序从数字和符号栈中pop出相应数字符号，进行运算。
  * 数字栈中剩余的最后一个数字就是运算结果。
  */
-public class Calculator {
+public class CalculatorOfStackApply {
 
 
     public ArrayStack getArrayStackInstance() {
@@ -26,7 +21,7 @@ public class Calculator {
     }
 
     public static void main(String[] args) {
-        Calculator calculator = new Calculator();
+        CalculatorOfStackApply calculator = new CalculatorOfStackApply();
 
         //获取数字栈和符号栈实例
         ArrayStack numberStack = calculator.getArrayStackInstance();
