@@ -1,6 +1,5 @@
-package sparsearray;
+package specialarray;
 
-import java.awt.print.Printable;
 import java.io.*;
 
 public class SparseArray {
