@@ -15,81 +15,45 @@ import java.util.Scanner;
  */
 public abstract class TriangleMatrixZip {
 
+    public TriangleMatrixZip(int [][] arr2d){
+        this.arr2d = arr2d;
+        zipTriMatrixToArray();
+    }
+
 
     public static void main(String[] args) {
-        int[][] triArray = TriMatrixOfDownRow.downTriMatrixInit(5);
-        print2DArray(triArray);
-
-        /*
-        行优先
-         */
-//        TriangleMatrixZip arrayZip = new TriMatrixOfDownRow(triArray);
-//        arrayZip.print1DArray();
-//        jugEqualForMatrixReflect(triArray, arrayZip);
-
-        /*
-        列优先
-         */
-        TriMatrixOfDownCol arrayZip = new TriMatrixOfDownCol(triArray);
-        arrayZip.print1DArray();
-        jugEqualForMatrixReflect(triArray,arrayZip);
+        TriangleMatrixZip matrixZip = new TriMatrixOfDownRowPriority(5);
+        matrixZip.print2DArray();
+        matrixZip.print1DArray();
+//        matrixZip = new TriMatrixOfDownColPriority(matrixCreate, 5);
+//        matrixZip.print2DArray();
+//        matrixZip.print1DArray();
+//
+        jugEqualForMatrixReflect(matrixZip.arr2d, matrixZip);
     }
+
+
+
 
     /**
      * 压缩后的一维数组
      */
-    public int[] arr1D;
+    public int[] arr1d;
 
+    /**
+     * 矩阵
+     */
+    public int[][] arr2d;
 
-    public TriangleMatrixZip(int[][] triMatrix) {
-        init(triMatrix);
-    }
-
-//    /**
-//     * 三角矩阵映射一维数组
-//     *
-//     * @param i 行号
-//     * @param j 列号
-//     * @return int
-//     * @author tqyao
-//     * @create 2022/9/25 15:48
-//     */
-//    private int triMatrixMap(int i, int j) {
-////        return i < j ? this.arr1D[this.arr1D.length - 1] : this.arr1D[(i + 1) * i / 2 + j];
-//        int idx;
-//        if (i >= j)
-//            idx = (i + 1) * i / 2 + j;
-//        else
-//            idx = this.arr1D.length - 1;
-//        return this.arr1D[idx];
-//    }
 
     protected abstract int triMatrixMap(int i, int j);
 
-    protected abstract void init(int[][] triMatrix);
 
-//    /**
-//     * 行优先压缩三角矩阵
-//     *
-//     * @param triMatrix
-//     */
-//    private void init(int[][] triMatrix) {
-//        // 获取矩阵阶数
-//        int n = triMatrix.length;
-//        // 根据阶数计算下三角矩阵有效元素个数再初始化一维数组（最后一个元素是提供给访问 j>i）
-//        this.arr1D = new int[getNSum(n) + 1];
-//        int cur = 0;
-//        // 把下三角矩阵有效元素按行优先一次放入一维数组
-//        for (int i = 0; i < n; i++) {
-//            for (int j = 0; j <= i; j++) {
-//                arr1D[cur++] = triMatrix[i][j];
-//            }
-//        }
-//    }
+    protected abstract void zipTriMatrixToArray();
 
 
     protected void print1DArray() {
-        System.out.println(Arrays.toString(this.arr1D));
+        System.out.println(Arrays.toString(this.arr1d));
     }
 
 
@@ -124,35 +88,15 @@ public abstract class TriangleMatrixZip {
         return (n + 1) * n / 2;
     }
 
-//
-//    /**
-//     * 下三角矩阵初始化
-//     *
-//     * @param n 矩阵阶数
-//     * @return int[][]
-//     * @author tqyao
-//     * @create 2022/9/25 14:55
-//     */
-//    public static int[][] downTriMatrixInit(int n) {
-//        int[][] triMatrix = new int[n][n];
-//        for (int i = 0; i < n; i++) {
-//            for (int j = 0; j <= i; j++) {
-//                triMatrix[i][j] = getRandom();
-//            }
-//        }
-//        return triMatrix;
-//    }
-
 
     /**
      * 打印二维数组
      *
-     * @param array
      * @author tqyao
      * @create 2022/9/25 12:02
      */
-    public static void print2DArray(int[][] array) {
-        for (int[] i : array) {
+    public void print2DArray() {
+        for (int[] i : arr2d) {
             for (int j : i) {
                 System.out.print(j + "\t");
             }
@@ -165,22 +109,32 @@ public abstract class TriangleMatrixZip {
         return (int) (Math.random() * 20 + 1);
     }
 
+
     /**
-     * 下三角矩阵初始化
-     *
-     * @param n 矩阵阶数
-     * @return int[][]
+     * 创建一个矩阵（上/下三角）
      * @author tqyao
-     * @create 2022/9/25 14:55
+     * @create 2022/9/26 19:57
      */
-    public static int[][] downTriMatrixInit(int n) {
-        int[][] triMatrix = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j <= i; j++) {
-                triMatrix[i][j] = getRandom();
-            }
-        }
-        return triMatrix;
+    interface ITriMatrixCreate {
+        /**
+         * 三角矩阵初始化
+         *
+         * @param n
+         * @return
+         */
+        int[][] triMatrixInit(int n);
     }
 
+    static class DownTriMatrixCreate implements ITriMatrixCreate {
+        @Override
+        public int[][] triMatrixInit(int n) {
+            int[][] triMatrix = new int[n][n];
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j <= i; j++) {
+                    triMatrix[i][j] = getRandom();
+                }
+            }
+            return triMatrix;
+        }
+    }
 }
