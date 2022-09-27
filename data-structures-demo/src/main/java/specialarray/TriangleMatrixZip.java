@@ -15,24 +15,30 @@ import java.util.Scanner;
  */
 public abstract class TriangleMatrixZip {
 
-    public TriangleMatrixZip(int [][] arr2d){
+    public TriangleMatrixZip(int[][] arr2d) {
         this.arr2d = arr2d;
-        zipTriMatrixToArray();
+        if (arr2d.length > 0)
+            zipTriMatrixToArray();
     }
 
 
+    public TriangleMatrixZip(ITriMatrixCreate matrixCreate, int n) {
+        this.arr2d = matrixCreate.triMatrixInit(n);
+        zipTriMatrixToArray();
+    }
+
     public static void main(String[] args) {
-        TriangleMatrixZip matrixZip = new TriMatrixOfDownRowPriority(5);
+//        TriangleMatrixZip matrixZip = new TriMatrixOfDownRowPriority(5);
+//        TriangleMatrixZip matrixZip = new SymMatrixOfUpRowPriority(5);
+        TriangleMatrixZip matrixZip = new SymMatrixOfUpColPriority(5);
+
         matrixZip.print2DArray();
         matrixZip.print1DArray();
-//        matrixZip = new TriMatrixOfDownColPriority(matrixCreate, 5);
 //        matrixZip.print2DArray();
 //        matrixZip.print1DArray();
 //
         jugEqualForMatrixReflect(matrixZip.arr2d, matrixZip);
     }
-
-
 
 
     /**
@@ -46,9 +52,22 @@ public abstract class TriangleMatrixZip {
     public int[][] arr2d;
 
 
+    /**
+     * 二维数组映射一维数组
+     * @author tqyao
+     * @create 2022/9/27 08:56
+     * @param i
+     * @param j
+     * @return int
+     */
     protected abstract int triMatrixMap(int i, int j);
 
 
+    /**
+     * 压缩矩阵成一维数组
+     * @author tqyao
+     * @create 2022/9/27 08:55
+     */
     protected abstract void zipTriMatrixToArray();
 
 
@@ -111,7 +130,8 @@ public abstract class TriangleMatrixZip {
 
 
     /**
-     * 创建一个矩阵（上/下三角）
+     * 创建一个三角矩阵
+     *
      * @author tqyao
      * @create 2022/9/26 19:57
      */
@@ -125,6 +145,9 @@ public abstract class TriangleMatrixZip {
         int[][] triMatrixInit(int n);
     }
 
+    /**
+     * 下三角矩阵
+     */
     static class DownTriMatrixCreate implements ITriMatrixCreate {
         @Override
         public int[][] triMatrixInit(int n) {
@@ -135,6 +158,26 @@ public abstract class TriangleMatrixZip {
                 }
             }
             return triMatrix;
+        }
+    }
+
+    /**
+     * 对称矩阵
+     */
+    static class SymMatrixCreate implements ITriMatrixCreate {
+
+        @Override
+        public int[][] triMatrixInit(int n) {
+            int[][] symMatrix = new int[n][n];
+            int j;
+            for (int i = 0; i < n; i++) {
+                j = i;
+                for (; j < n; j++) {
+                    symMatrix[i][j] = getRandom();
+                    symMatrix[j][i] = symMatrix[i][j];
+                }
+            }
+            return symMatrix;
         }
     }
 }
