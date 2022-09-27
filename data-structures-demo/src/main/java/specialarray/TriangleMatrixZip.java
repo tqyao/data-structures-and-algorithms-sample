@@ -30,7 +30,8 @@ public abstract class TriangleMatrixZip {
     public static void main(String[] args) {
 //        TriangleMatrixZip matrixZip = new TriMatrixOfDownRowPriority(5);
 //        TriangleMatrixZip matrixZip = new SymMatrixOfUpRowPriority(5);
-        TriangleMatrixZip matrixZip = new SymMatrixOfUpColPriority(5);
+//        TriangleMatrixZip matrixZip = new SymMatrixOfUpColPriority(5);
+        TriangleMatrixZip matrixZip = new SymMatrixOfDownColPriority(5);
 
         matrixZip.print2DArray();
         matrixZip.print1DArray();
