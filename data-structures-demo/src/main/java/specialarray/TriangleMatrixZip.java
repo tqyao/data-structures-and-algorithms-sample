@@ -13,7 +13,7 @@ import java.util.Scanner;
  * @version 1.0.0
  * @create 2022/09/25 14:32
  */
-public abstract class TriangleMatrixZip {
+public abstract class TriangleMatrixZip implements ITriDiagonalMatrix {
 
     public TriangleMatrixZip(int[][] arr2d) {
         this.arr2d = arr2d;
@@ -31,14 +31,24 @@ public abstract class TriangleMatrixZip {
 //        TriangleMatrixZip matrixZip = new TriMatrixOfDownRowPriority(5);
 //        TriangleMatrixZip matrixZip = new SymMatrixOfUpRowPriority(5);
 //        TriangleMatrixZip matrixZip = new SymMatrixOfUpColPriority(5);
-        TriangleMatrixZip matrixZip = new SymMatrixOfDownColPriority(5);
+//        TriangleMatrixZip matrixZip = new SymMatrixOfDownColPriority(5);
+//        TriangleMatrixZip matrixZip = new TriDiagonalMatrixOfRowPriority(5);
 
-        matrixZip.print2DArray();
-        matrixZip.print1DArray();
+//        matrixZip.print2DArray();
+//        matrixZip.print1DArray();
 //        matrixZip.print2DArray();
 //        matrixZip.print1DArray();
 //
-        jugEqualForMatrixReflect(matrixZip.arr2d, matrixZip);
+//        jugEqualForMatrixReflect(matrixZip.arr2d, matrixZip);
+
+
+        TriangleMatrixZip matrixZip = new TriDiagonalMatrixOfRowPriority(5);
+        matrixZip.print2DArray();
+        matrixZip.print1DArray();
+//        jugEqualForMatrixReflect(matrixZip.arr2d, matrixZip);
+
+        jugEqualForOneDimensionReflect(matrixZip);
+
     }
 
 
@@ -55,17 +65,19 @@ public abstract class TriangleMatrixZip {
 
     /**
      * 二维数组映射一维数组
-     * @author tqyao
-     * @create 2022/9/27 08:56
+     *
      * @param i
      * @param j
      * @return int
+     * @author tqyao
+     * @create 2022/9/27 08:56
      */
     protected abstract int triMatrixMap(int i, int j);
 
 
     /**
      * 压缩矩阵成一维数组
+     *
      * @author tqyao
      * @create 2022/9/27 08:55
      */
@@ -77,6 +89,33 @@ public abstract class TriangleMatrixZip {
     }
 
 
+    /**
+     * 输入 压缩后一维数组索引在矩阵中查找对应值是否相等
+     * @author tqyao
+     * @create 2022/9/27 20:22
+     * @param diagonalMatrix
+     */
+    public static void jugEqualForOneDimensionReflect(TriangleMatrixZip diagonalMatrix) {
+        Scanner scanner = new Scanner(System.in);
+        int inp;
+        while (true) {
+            System.out.print("一维数组索引，按 '-1' 结束>> ");
+            inp = scanner.nextInt();
+            if (inp == -1) return;
+            System.out.printf("arr1d[%d] == .oneDimensionMap(%d) " +
+                            ">> %d == %d => %b%n", inp, inp, diagonalMatrix.arr1d[inp], diagonalMatrix.oneDimensionMap(inp)
+                    , diagonalMatrix.arr1d[inp] == diagonalMatrix.oneDimensionMap(inp));
+        }
+    }
+
+    /**
+     * 输入矩阵行列值在压缩后的一维数组中查找对应值是否相等
+     *
+     * @param triArray
+     * @param arrayZip
+     * @author tqyao
+     * @create 2022/9/27 19:47
+     */
     public static void jugEqualForMatrixReflect(int[][] triArray, TriangleMatrixZip arrayZip) {
         Scanner scanner = new Scanner(System.in);
         String inp;
@@ -179,6 +218,33 @@ public abstract class TriangleMatrixZip {
                 }
             }
             return symMatrix;
+        }
+    }
+
+    /**
+     * 三对角矩阵创建
+     *
+     * @author tqyao
+     * @create 2022/9/27 18:18
+     */
+    static class TriDiagonalMatrixCreate implements ITriMatrixCreate {
+        @Override
+        public int[][] triMatrixInit(int n) {
+            int[][] triDiagonalMx = new int[n][n];
+            int j;
+            for (int i = 0; i < n; i++) {
+                // 如果是前两行，则从第0列开始录入随机值，否则从第 i - 1 列开始录入随机值
+                j = i <= 1 ? 0 : i - 1;
+
+                /*
+                除第0行和最后一行是两个元素，其余行都是3元素;
+                最后一行仅用 i- j 绝对值是否大于1判断会数组越界，所以需要 j!=n约束
+                 */
+                for (; Math.abs(i - j) <= 1 && j != n; j++) {
+                    triDiagonalMx[i][j] = getRandom();
+                }
+            }
+            return triDiagonalMx;
         }
     }
 }
