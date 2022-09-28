@@ -1,11 +1,11 @@
 package specialarray;
 
 /**
- * 稀疏矩阵的压缩存储
+ * 稀疏矩阵的压缩存储 ———— 三元组法
  * @author tqyao
  * @create 2022/9/25 14:13
  */
-public class SparseMatrixZip {
+public class SparseMatrixTriadZip {
 
 
     public static void main(String[] args) {
