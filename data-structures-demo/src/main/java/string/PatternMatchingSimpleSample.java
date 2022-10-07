@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.util.Arrays;
 
 /**
+ * 简单模式匹配算法
  * @author tqyao
  * @version 1.0.0
  * @create 2022/10/05 13:53
