@@ -4,6 +4,7 @@
 package string;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -18,16 +19,22 @@ import java.util.Arrays;
  */
 public class PatternMatchingKMPSample {
 
+
     static char[] sub;
     static char[] main;
 
     @BeforeClass
-    public static void before() {
+    public static void beforeClass() {
+        System.out.println("PatternMatchingKMPSample.beforeClass");
+
         sub = "ababaaababaa".toCharArray();
         main = "aaaababtaaababaabbababaaababaab".toCharArray();
 
         sub = "ababaaababaa".toCharArray();
         main = "asdaababaddsaababaaababaaababaaas".toCharArray();
+
+        sub = "aaaab".toCharArray();
+        main = "aaacaaaab".toCharArray();
     }
 
     @Test
@@ -222,7 +229,6 @@ public class PatternMatchingKMPSample {
 
     @Test
     public void test02() {
-        // todo:???
         int[] arr = new int[3];
         int i = 0;
         arr[0] = 2;
@@ -230,6 +236,7 @@ public class PatternMatchingKMPSample {
 
         int[] arr02 = new int[3];
         System.out.println(Arrays.toString(arr02));
+        // todo:???
         arr02[i++] = arr[i];
         System.out.println(Arrays.toString(arr02));
         System.out.println(i);
@@ -251,12 +258,13 @@ public class PatternMatchingKMPSample {
         int idx02 = kmpIndex02(main, sub, getNextVal(sub, getNext(sub)));
         System.out.println(idx01);
         System.out.println(idx02);
-        Assert.assertEquals(idx01,idx02);
+        Assert.assertEquals(idx01, idx02);
     }
 
 
     /**
      * next 数组优化
+     * 得出next数据后进行优化（实际上不应该这样）
      *
      * @param sub
      * @param next
@@ -274,6 +282,90 @@ public class PatternMatchingKMPSample {
             if (j == -1 || sub[i] != sub[j]) nextval[i] = next[i];
             else nextval[i] = nextval[j];
             i++;
+        }
+        return nextval;
+    }
+
+    public static int kmpIndex03(char[] main, char[] sub, int[] next) {
+        int i, j;
+        i = j = 0;
+        while (i < main.length && j < sub.length) {
+            if (j == -1 || main[i] == sub[j]) {
+                i++;
+                j++;
+            } else {
+                j = next[j];
+            }
+        }
+        if (j >= sub.length) return i - sub.length;
+        return -1;
+    }
+
+    public static int[] getNext03(char[] sub) {
+        int[] next = new int[sub.length];
+        next[0] = -1;
+        int j = 0;
+        int k = next[j];
+        while (j < sub.length - 1) {
+            if (k == -1 || sub[j] == sub[k]) {
+                next[++j] = ++k;
+            } else {
+                k = next[k];
+            }
+        }
+        return null;
+    }
+
+
+    static String sm;
+    static String ss;
+
+    @Before
+    public  void before() {
+        System.out.println("PatternMatchingKMPSample.before");
+        sm = new String(main);
+        ss = new String(sub);
+    }
+
+    @Test
+    public void testKmpGetNextVal() {
+        System.out.println("sm.indexOf(ss) = " + sm.indexOf(ss));
+        int[] nextVal = getNextVal(sub);
+        System.out.println(Arrays.toString(nextVal));
+        System.out.println("kmpIndex03(main,sub,getNextVal(sub)) = " + kmpIndex03(main, sub, nextVal));
+    }
+
+
+    /**
+     * 对获取 next 数组的优化（方法更名getNextval）
+     *
+     * @param sub
+     * @return int[]
+     * @author tqyao
+     * @create 2022/10/12 09:14
+     */
+    public static int[] getNextVal(char[] sub) {
+        int[] nextval = new int[sub.length];
+        nextval[0] = -1;
+        int i, j;
+        i = 0;
+        j = nextval[i];
+        while (i < sub.length - 1) {
+            if (j == -1 || sub[i] == sub[j]) {
+//                nextval[++i] = ++j;
+                // 回溯到的位序对应字符与开始匹配失败处的字符相等
+                // ，由于nextval数组是递推求出每一项，所以在匹配失败前的每一项都满足
+                // 该项（该位序）匹配失败后应该回溯到位序，此位序的字符一定是和匹配失败处的字符是不相等的
+                if (sub[++i] == sub[++j]) nextval[i] = nextval[j];
+                    // 上面if判断是对求next数组的优化，else则是原先next数组处理
+                    // 与现在的if语句处理结合 即：当sub[i] == sub[j]时
+                    // ，最大前后缀子串 [sub0 ~ subj] = [sub(i-j) ~ sub(i)] (此处假设i和j进行if语句的自增)
+                    // 得出 j 应该回溯到的位序是此时的 j + 1，当进入else分支代表该位序上的字符与原始匹配失败
+                    // 处的字符 i + 1 是不相等的
+                else nextval[i] = j;
+            } else
+                j = nextval[j];
+
         }
         return nextval;
     }
