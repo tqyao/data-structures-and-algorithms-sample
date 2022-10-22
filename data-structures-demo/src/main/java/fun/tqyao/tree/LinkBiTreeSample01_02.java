@@ -4,8 +4,11 @@
 package fun.tqyao.tree;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -16,7 +19,11 @@ import java.util.*;
  * @version 1.0.0
  * @create 2022/10/17 16:07
  */
+@Slf4j
 public class LinkBiTreeSample01_02 {
+
+
+//    private final static Logger log = LoggerFactory.getLogger(LinkBiTreeSample01_02.class);
 
 
     public static String[] inputStringArray() {
@@ -84,6 +91,10 @@ public class LinkBiTreeSample01_02 {
 
     @Test
     public void testCreateBiTree() {
+        log.debug("test LinkBiTreeSample01_02.main");
+        log.info("test LinkBiTreeSample01_02.main");
+        log.warn("test LinkBiTreeSample01_02.main");
+        log.error("test LinkBiTreeSample01_02.main");
         BiTree<String> tree = new BiTree<>();
         // 手输树节点
 //        tree.createBiTree(inputStringArray());
@@ -95,11 +106,16 @@ public class LinkBiTreeSample01_02 {
     }
 
     public static void main(String[] args) {
-        BiTree<String> tree = new BiTree<>();
-        String[] strings = inputStringArray();
-        System.out.println(Arrays.toString(strings));
-        tree.createCompleteBiTree(strings);
-        System.out.println(tree.levelOrder().toString());
+        log.debug("LinkBiTreeSample01_02.main");
+        log.info("LinkBiTreeSample01_02.main");
+        log.warn("LinkBiTreeSample01_02.main");
+        log.error("LinkBiTreeSample01_02.main");
+
+//        BiTree<String> tree = new BiTree<>();
+//        String[] strings = inputStringArray();
+//        System.out.println(Arrays.toString(strings));
+//        tree.createCompleteBiTree(strings);
+//        System.out.println(tree.levelOrder().toString());
     }
 
     static class BiTree<T> {
