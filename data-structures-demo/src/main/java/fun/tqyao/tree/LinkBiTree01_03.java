@@ -32,13 +32,21 @@ public class LinkBiTree01_03<T> {
 
         // 利用栈的后进先出特性 前序遍历树
         Stack<BitNode<T>> stack = new Stack<>();
-        // 先序遍历先输出树的根节点
-        res.add(root.data);
-        // 根节点入栈
-        stack.push(root);
 
-        BitNode<T> tempNode = null;
+        // 初始化遍历节点指针为根节点 ！！
+        BitNode<T> tempNode = root;
+        /*
+        当没有左子树时，栈的最大长度为1，else分支弹出栈唯一的一个元素后栈为空，此时还不确定
+        该节点有无右孩子，所以循环判断应加上 null != tempNode
+         */
         while (null != tempNode || !stack.isEmpty()) {
+            /*
+            检查当前迭代节点是否是空：
+            1.非空：根据前序遍历规则，直接加入到遍历容器，此时为第一次"遇到"该节点，入栈
+            ，一路向左，检查该节点是否还有左孩子。
+            2. 空：只要节点是空说明空节点的上一个节点没有左孩子，弹出栈顶元素（第二次"遇到"该节点），按照前序遍历规则，转向遍历右子树
+            ，右子树遍历重复步骤1
+             */
             if (null != tempNode) {
                 res.add(tempNode.data);
                 stack.push(tempNode);
@@ -71,10 +79,9 @@ public class LinkBiTree01_03<T> {
 
         // 借助栈的后进先出特性中序遍历二叉树
         Stack<BitNode<T>> stack = new Stack<>();
-        stack.push(root);
 
-        // 遍历指针
-        BitNode<T> tempNode = null;
+        // 遍历指针，初始化为根节点，循环if判断进入第一个分支入栈
+        BitNode<T> tempNode = root;
             /*
             [null != tempNode || ] 条件的必要性：
            如果二叉树没有左子树，栈最大非空长度为1，所以当进入else分支弹出一个节点后
