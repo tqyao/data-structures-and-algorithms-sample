@@ -21,6 +21,9 @@ public class LinkBiTree01_03Test {
     @BeforeClass
     public static void beforeClass() throws Exception {
         log.debug("beforeClass...");
+        log.info("beforeClass...");
+        log.warn("beforeClass...");
+        log.error("beforeClass...");
 
         biTree = new LinkBiTree01_03<>();
         //随机节点数据
