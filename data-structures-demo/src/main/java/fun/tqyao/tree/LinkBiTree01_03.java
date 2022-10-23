@@ -7,6 +7,7 @@ import java.util.*;
 
 /**
  * 二叉链树+junit测试
+ *
  * @author tqyao
  * @version 1.0.0
  * @create 2022/10/22 11:24
@@ -15,6 +16,65 @@ public class LinkBiTree01_03<T> {
 
 
     BitNode<T> root;
+
+
+    /**
+     * 非递归后序遍历：左右根
+     * 1. 沿左孩子依次入栈知道左子树为空
+     * 2. 读栈顶元素，如果栈顶元素有右孩子且未被访问过，则转向右子树执行1
+     * 3. 否则出栈并访问
+     *
+     * @return java.util.List<T>
+     * @author tqyao
+     * @create 2022/10/22 20:46
+     */
+    public List<T> postOrder() {
+        List<T> res = new ArrayList<>();
+        if (null == root)
+            return res;
+
+        Stack<BitNode<T>> stack = new Stack<>();
+
+        // 遍历指针，根节点一路向左入栈
+        BitNode<T> p = root;
+        BitNode<T> r = null;
+        while (null != p || !stack.isEmpty()) {
+            if (null != p) {
+                // 节点不为空一路向左入栈
+                stack.push(p);
+                p = p.lchild;
+            } else {
+
+                /*
+                节点是空，有可能上一个节点左孩子走到尽头，也有可能是右孩子不存在
+                ，但无论哪种情况，都需要看上一个节点（栈顶元素）右孩子是否存在且是否有被访问过
+                 */
+
+                // 获取栈顶元素，不删除
+                p = stack.peek();
+                if (null != p.rchild && r != p.rchild) {
+                    // 右孩子存在且未被访问，转至到右子树执行"一路向左"操作
+                    p = p.rchild;
+                } else {
+                    /*
+                    右孩子不存在或已经被访问，表明左子树已经全部访问过，右孩子刚被访问过
+                    ，弹出节点并访问，...
+                     */
+                    p = stack.pop();
+                    // 访问栈顶元素
+                    res.add(p.data);
+                    // 指针记录此时访问的节点，
+                    r = p;
+                    /*
+                     此时以p为根节点的子树已全部被访问，应把p节点标记为空，下次循环回到父节点接着if判断：是否
+                     有右孩子？右孩子是否被访问过？
+                     */
+                    p = null;
+                }
+            }
+        }
+        return res;
+    }
 
 
     /**

@@ -20,10 +20,7 @@ public class LinkBiTree01_03Test {
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        log.debug("beforeClass...");
         log.info("beforeClass...");
-        log.warn("beforeClass...");
-        log.error("beforeClass...");
 
         biTree = new LinkBiTree01_03<>();
         //随机节点数据
@@ -49,6 +46,7 @@ public class LinkBiTree01_03Test {
         list.clear();
         biTree.postOrderRecursion(biTree.root, list);
         System.out.println("后> " + list);
+        System.out.println();
     }
 
 
@@ -61,6 +59,11 @@ public class LinkBiTree01_03Test {
     @Test
     public void inOrder() {
         System.out.println("中> " + biTree.inOrder());
+    }
+
+    @Test
+    public void postOrder(){
+        System.out.println("后> " + biTree.postOrder());
     }
 
 
