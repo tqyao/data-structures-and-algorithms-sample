@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.*;
 
 /**
+ * 线索化二叉树
  * @author tqyao
  * @version 1.0.0
  * @create 2022/10/25 10:08
@@ -15,12 +16,18 @@ import java.util.*;
 @Slf4j
 public class ThreadTree02_01<T> {
 
+    /**
+     * 根节点
+     */
     ThreadNode<T> root;
 
 
+
+
+
+
     /**
-     * 中序线索化二叉树：
-     * 中序遍历指定节点
+     * 后继遍历"中序线索化二叉树"指定节点
      *
      * @param any
      * @return java.util.List<T>
@@ -38,8 +45,7 @@ public class ThreadTree02_01<T> {
 
 
     /**
-     * 中序线索化二叉树：
-     * 查找指定节点中序线索化二叉树找后继节点
+     * 查找指定节点"中序线索化二叉树"中的找后继节点
      *
      * @param p
      * @return fun.tqyao.tree.ThreadTree02_01.ThreadNode<T>
@@ -53,12 +59,12 @@ public class ThreadTree02_01<T> {
          */
         if (p.rtga == 1)
             return p.rchild;
-        return inFistNode(p);
+        return inFistNode(p.rchild);
     }
 
     /**
-     * 中序线索化二叉树：
-     * 找到指定节点中序遍历第一个输出节点
+     *
+     * 在"中序线索化二叉树"中找到指定节点中序遍历第一个输出节点
      *
      * @param p
      * @return fun.tqyao.tree.ThreadTree02_01.ThreadNode<T>
@@ -117,6 +123,9 @@ public class ThreadTree02_01<T> {
     }
 
 
+    /**
+     * 线索化前驱
+     */
     ThreadNode<T> pre;
 
     /**
