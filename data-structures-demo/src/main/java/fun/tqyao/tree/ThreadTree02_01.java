@@ -9,6 +9,7 @@ import java.util.*;
 
 /**
  * 线索化二叉树
+ *
  * @author tqyao
  * @version 1.0.0
  * @create 2022/10/25 10:08
@@ -22,8 +23,97 @@ public class ThreadTree02_01<T> {
     ThreadNode<T> root;
 
 
+    /**
+     * todo ：未实现
+     *
+     * @return java.util.List<T>
+     * @author tqyao
+     * @create 2022/10/29 20:37
+     */
+    public List<T> preOrderTraverse() {
+        List<T> resList = new ArrayList<>();
+        if (null == root)
+            return resList;
+
+        Stack<ThreadNode<T>> stack = new Stack<>();
+        stack.push(root);
+        ThreadNode<T> tempNode = null;
+        ThreadNode<T> pre = null;
+
+        while (!stack.isEmpty() || tempNode != stack.peek()) {
+            if (tempNode != null && tempNode != stack.peek() && pre != tempNode) {
+                // 输出
+                resList.add(tempNode.data);
+                // 记录输出节点
+                pre = tempNode;
+                // 入栈
+                stack.push(tempNode);
+                // 一路向左
+                tempNode = tempNode.lchild;
+            } else {
+                tempNode = stack.pop();
+                // 转向右子树
+                tempNode = tempNode.rchild;
+            }
+        }
+        return resList;
+    }
 
 
+    /**
+     * 前驱遍历"中序线索化二叉树"指定节点
+     *
+     * @param any
+     * @return java.util.List<T>
+     * @author tqyao
+     * @create 2022/10/29 20:43
+     */
+    public List<T> frontInOrderThread(ThreadNode<T> any) {
+        List<T> resList = new LinkedList<>();
+        // 1. 前驱遍历需要找到指定节点的最后一个输出节点，（再往逐个查找前序元素）
+        while (any != null && any.rtga == 0)
+            any = any.rchild;
+
+        // 2. 依次前驱遍历，如果左孩子为线索则左孩子为前驱，否则按照步骤1.找到前驱
+        while (any != null) {
+            resList.add(any.data);
+            if (any.ltag == 1)
+                any = any.lchild;
+            else {
+                any = any.lchild;
+                while (any != null && any.rtga == 0)
+                    any = any.rchild;
+            }
+        }
+        return resList;
+    }
+
+
+    /**
+     * 后继遍历"中序线索化二叉树"指定节点2
+     *
+     * @param any
+     * @return java.util.List<T>
+     * @author tqyao
+     * @create 2022/10/28 17:03
+     */
+    public List<T> subInOrderThread2(ThreadNode<T> any) {
+        List<T> resList = new ArrayList<>();
+        while (any != null && any.ltag == 0)
+            any = any.lchild;
+
+        while (any != null) {
+            resList.add(any.data);
+            if (any.rtga == 1)
+                any = any.rchild;
+            else {
+                any = any.rchild;
+                while (any != null && any.ltag == 0)
+                    any = any.lchild;
+            }
+        }
+        return resList;
+    }
 
 
     /**
@@ -34,10 +124,16 @@ public class ThreadTree02_01<T> {
      * @author tqyao
      * @create 2022/10/28 17:03
      */
-    public List<T> inOrderThread(ThreadNode<T> any) {
+    public List<T> subInOrderThread(ThreadNode<T> any) {
+//        List<T> resList = new ArrayList<>();
+//        for (any = inFistNode(any); any != null; any = inNextNode(any))
+//            resList.add(any.data);
+
         List<T> resList = new ArrayList<>();
-        while (null != any) {
+        any = inFistNode(any);
+        while (any != null) {
             resList.add(any.data);
+//         查找当前节点的后继
             any = inNextNode(any);
         }
         return resList;
@@ -63,7 +159,6 @@ public class ThreadTree02_01<T> {
     }
 
     /**
-     *
      * 在"中序线索化二叉树"中找到指定节点中序遍历第一个输出节点
      *
      * @param p
@@ -79,6 +174,7 @@ public class ThreadTree02_01<T> {
 
     /**
      * 后续线索化二叉树1
+     *
      * @author tqyao
      * @create 2022/10/27 19:45
      */
@@ -130,9 +226,10 @@ public class ThreadTree02_01<T> {
 
     /**
      * 后序线索化2
+     *
+     * @param cur
      * @author tqyao
      * @create 2022/10/29 14:42
-     * @param cur
      */
     public void postThreadRecursion(ThreadNode<T> cur) {
         if (null == cur)
