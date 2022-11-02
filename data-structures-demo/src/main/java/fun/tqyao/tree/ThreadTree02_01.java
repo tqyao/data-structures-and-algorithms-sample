@@ -24,7 +24,52 @@ public class ThreadTree02_01<T> {
 
 
     /**
-     * todo ：未实现
+     * 前驱遍历后续线索化二叉树
+     *
+     * @return fun.tqyao.tree.ThreadTree02_01.ThreadNode<T>
+     * @author tqyao
+     * @create 2022/11/2 14:22
+     */
+    public List<T> subPostOrderThread() {
+        List<T> resList = new ArrayList<>();
+        //前驱遍历：则说明必须从最后一个节点开始，根据后续线索化二叉树规则，根节点为最后输出节点
+        ThreadNode<T> temp = root;
+        while (temp != null) {
+            resList.add(temp.data);
+            // 1. 左线索为1，则左孩子为前驱
+            if (temp.ltag == 1)
+                temp = temp.lchild;
+            else {
+                // 2. 否则判断是否有右孩子（非线索化的右孩子），根据后续二叉树规则，有则右孩子为第一前驱
+                // ，否则左孩子为第一前驱（1.出if判断为假，非线索化左孩子一定存在）
+                if (temp.rtga == 1) temp = temp.lchild;
+                else temp = temp.rchild;
+            }
+        }
+        return resList;
+    }
+
+
+    /**
+     * todo:在前序遍历中从根节点查找指定节点的前驱节点
+     *
+     * @param specify
+     * @return fun.tqyao.tree.ThreadTree02_01.ThreadNode<T>
+     * @author tqyao
+     * @create 2022/11/2 10:44
+     */
+    public ThreadNode<T> findPreNodeFromPreOrder(ThreadNode<T> specify) {
+        ThreadNode<T> cur = root;
+        if (cur == specify)
+            return null;
+        Stack<ThreadNode<T>> stack = new Stack<>();
+        while (!stack.isEmpty() && cur != null) {
+        }
+        return null;
+    }
+
+    /**
+     * todo ：error
      *
      * @return java.util.List<T>
      * @author tqyao
@@ -54,6 +99,37 @@ public class ThreadTree02_01<T> {
                 tempNode = stack.pop();
                 // 转向右子树
                 tempNode = tempNode.rchild;
+            }
+        }
+        return resList;
+    }
+
+
+    /**
+     * 后继遍历"前序线索化二叉树"指定节点
+     *
+     * @param any
+     * @return java.util.List<T>
+     * @author tqyao
+     * @create 2022/11/2 08:34
+     */
+    public List<T> subPreOrderThread(ThreadNode<T> any) {
+        List<T> resList = new ArrayList<>();
+        while (any != null) {
+            resList.add(any.data);
+            // 1. 右孩子线索化，后继即为右孩子
+            if (any.rtga == 1)
+                any = any.rchild;
+            else {
+                /*
+                2. 否则存在左右孩子。根据前序遍历规则，左孩子存在（未被线索化）则为后继
+                ，否则后继为右孩子（1.处if返回false，必定存在右孩子）
+                 */
+//                any = any.ltag == 1 ? any.rchild : any.lchild;
+                if (any.ltag == 1)
+                    any = any.rchild;
+                else
+                    any = any.lchild;
             }
         }
         return resList;
@@ -291,16 +367,20 @@ public class ThreadTree02_01<T> {
         }
 
         if (pre != null && pre.rchild == null) {
+            // B
             pre.rchild = cur;
             pre.rtga = 1;
         }
         // 遍历输出后，自然是下一次递归调用的前驱
         pre = cur;
-        // 未被线索化则对左孩递归，避免死循环
+        // 左孩子未被线索化才对左孩递归，避免死循环
         if (cur.ltag == 0)
             preThreadRecursion(cur.lchild);
 
-        preThreadRecursion(cur.rchild);
+        // 右孩子未被线索化才对右孩递归，避免死循环。（因为B处可能使栈顶元素的后继指向当前节点
+        // 如果不加此处if判断，当返回到上一个函数调用栈，再次对右孩子进行递归造成死循环）
+        if (cur.rtga == 0)
+            preThreadRecursion(cur.rchild);
     }
 
 

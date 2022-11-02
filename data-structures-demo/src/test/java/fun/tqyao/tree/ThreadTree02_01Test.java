@@ -23,6 +23,7 @@ public class ThreadTree02_01Test {
         log.info("beforeClass ...");
 //        strings = "A,B,C".split(",");
         strings = "A,B,C,D,E,F,G,H,I,J".split(",");
+//        strings = "A,B,C,D".split(",");
 //        String[] strings = "1,2,3,0,0,0,4,5,6,7,8".split(",");
 //        String[] strings = "1, 2, 0, 3, 4, 0, 0, 0, 5, 6, 0, 0, 7, 8, 9, 0, 0, 0, 0"
 //                .replaceAll("\\s+", "").split(",");
@@ -34,7 +35,18 @@ public class ThreadTree02_01Test {
     }
 
 
+    @Test
+    public void testSubPostOrderThread(){
+        theadTree.postThreadRecursion(theadTree.root);
+        System.out.println(theadTree.subPostOrderThread());
+    }
 
+
+    @Test
+    public void testSubPreOrderThread(){
+        theadTree.preThreadRecursion(theadTree.root);
+        System.out.println(theadTree.subPreOrderThread(theadTree.root));
+    }
 
     @Test
     public void testFrontInOrderThread(){
