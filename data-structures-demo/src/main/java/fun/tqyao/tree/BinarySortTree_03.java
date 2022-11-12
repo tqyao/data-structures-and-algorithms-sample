@@ -12,7 +12,7 @@ import java.util.*;
  * @version 1.0.0
  * @create 2022/11/05 16:24
  */
-public class BinarySortTree_04 {
+public class BinarySortTree_03 {
 
     BinarySortNode root;
 

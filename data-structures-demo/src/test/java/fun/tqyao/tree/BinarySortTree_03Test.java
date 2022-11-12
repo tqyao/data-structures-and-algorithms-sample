@@ -4,13 +4,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
-
-public class BinarySortTree_04Test {
+public class BinarySortTree_03Test {
 
     @Test
     public void testCompareTo() {
@@ -19,7 +16,7 @@ public class BinarySortTree_04Test {
         Object o = "asda";
     }
 
-    static BinarySortTree_04 bstree;
+    static BinarySortTree_03 bstree;
 
 
     @BeforeClass
@@ -30,7 +27,7 @@ public class BinarySortTree_04Test {
         System.out.printf("nodevals = %s\n", Arrays.toString(nodeVals));
         System.out.printf("nodeVals.length = %d\n", nodeVals.length);
 
-        bstree = new BinarySortTree_04();
+        bstree = new BinarySortTree_03();
         bstree.createBSTByRecursion(nodeVals);
         List<Integer> orderList = bstree.inOrderTraverse();
         System.out.println(orderList.toString());
