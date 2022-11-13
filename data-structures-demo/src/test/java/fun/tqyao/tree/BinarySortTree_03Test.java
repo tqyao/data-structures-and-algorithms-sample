@@ -16,7 +16,7 @@ public class BinarySortTree_03Test {
         Object o = "asda";
     }
 
-    static BinarySortTree_03 bstree;
+    static BinarySortTree03_01 bstree;
 
 
     @BeforeClass
@@ -27,7 +27,7 @@ public class BinarySortTree_03Test {
         System.out.printf("nodevals = %s\n", Arrays.toString(nodeVals));
         System.out.printf("nodeVals.length = %d\n", nodeVals.length);
 
-        bstree = new BinarySortTree_03();
+        bstree = new BinarySortTree03_01();
         bstree.createBSTByRecursion(nodeVals);
         List<Integer> orderList = bstree.inOrderTraverse();
         System.out.println(orderList.toString());
@@ -43,23 +43,31 @@ public class BinarySortTree_03Test {
 
     @Test
     public void testRemove() {
-        System.out.println("remove >>>>>");
+        System.out.println("remove 78 >>>>>");
 //        bstree.remove(87);
 //        System.out.println(bstree.inOrderTraverse());
 
-        bstree.remove(78);
-        System.out.println(bstree.inOrderTraverse());
-        Optional.ofNullable(bstree.searchNodeTraverse(78)).ifPresent(System.out::println);
-        Optional.ofNullable(bstree.searchNodeTraverse(81)).ifPresent(System.out::println);
+//        bstree.remove(78);
+        bstree.removeRecursion(78);
+        System.out.println("中序遍历 >>>" + bstree.inOrderTraverse());
 
-        System.out.println("//////////////////");
+        System.out.println(">>>> 78 是否存在");
+        Optional.ofNullable(bstree.searchNodeTraverse(78)).ifPresent(System.out::println);
+        System.out.println("<<<< 78 是否存在");
+        System.out.println();
+        System.out.println(">>>> 81 是否存在");
+        Optional.ofNullable(bstree.searchNodeTraverse(81)).ifPresent(System.out::println);
+        System.out.println("<<<< 81 是否存在");
+
+        System.out.println(">>>> 94 右孩子是否存在");
         Optional.ofNullable(bstree.searchNodeTraverse(94))
                 .map(node -> node.rchild).ifPresent(System.out::println);
+        System.out.println("<<<< 94 右孩子是否存在");
 
-        System.out.println("||||||||||||||||||||");
+        System.out.println(">>>> 94 左孩子是否存在");
         Optional.ofNullable(bstree.searchNodeTraverse(94))
                 .map(node -> node.lchild).ifPresent(System.out::println);
-        System.out.println("\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
+        System.out.println("<<<< 94 左孩子是否存在");
 
     }
 

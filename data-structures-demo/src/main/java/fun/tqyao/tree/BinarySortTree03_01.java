@@ -12,9 +12,59 @@ import java.util.*;
  * @version 1.0.0
  * @create 2022/11/05 16:24
  */
-public class BinarySortTree_03 {
+public class BinarySortTree03_01 {
 
     BinarySortNode root;
+
+
+    public void removeRecursion(int value) {
+        Optional.ofNullable(searchNodeTraverse(value))
+                .ifPresent(specify -> removeRecursion(root, specify));
+    }
+
+
+    /**
+     * 递归删除节点
+     *
+     * @param root
+     * @param specifyNode
+     * @return fun.tqyao.tree.BinarySortTree03_01.BinarySortNode
+     * @author tqyao
+     * @create 2022/11/12 21:41
+     */
+    private BinarySortNode removeRecursion(BinarySortNode root, BinarySortNode specifyNode) {
+        // 初始排序二叉树为空 或 删除节点不存在于排序树中
+        if (root == null || specifyNode == null)
+            return null;
+
+        if (root.data > specifyNode.data)
+            // 待删除节点值小于当前节点，带删除节点在"左子树"中
+            root.lchild = removeRecursion(root.lchild, specifyNode);
+        else if (root.data < specifyNode.data)
+            // 待删除节点值大于当前节点，带删除节点在"右子树"中
+            root.rchild = removeRecursion(root.rchild, specifyNode);
+        else {  // 当前节点=待删除节点
+            if (root.lchild != null && root.rchild != null) {
+                /**
+                 * 待删除节点的左右孩子都存在：
+                 * 1. 找到右子树中最小节点，即中序直接后继
+                 * 2. 用最小节点值替换当前待删除节点值，维护删除节点后的排序二叉树的 左< 根 < 右 性质
+                 * 3. 删除最小节点
+                 */
+                BinarySortNode rightMinNode = root.rchild;
+                while (rightMinNode.lchild != null)
+                    rightMinNode = rightMinNode.lchild;
+                root.data = rightMinNode.data;
+                // 3. ⭐ ️递归删除最小节点
+                root.rchild = removeRecursion(root.rchild, rightMinNode);
+            } else
+                // 待删除节点是叶子节点 或 只有一个孩子情况
+                root = root.lchild != null ? root.lchild : root.rchild;
+        }
+
+        // 返回当前节点，维持父子节点关系
+        return root;
+    }
 
 
     /**
@@ -460,6 +510,10 @@ public class BinarySortTree_03 {
             return searchNodeRecursion(cur.rchild, value);
     }
 
+    public BinarySortNode searchNodeTraverse(int value) {
+        return searchNodeTraverse(root, value);
+    }
+
     /**
      * 排序二叉树查找（遍历）
      *
@@ -468,17 +522,16 @@ public class BinarySortTree_03 {
      * @author tqyao
      * @create 2022/11/9 11:41
      */
-    public BinarySortNode searchNodeTraverse(int value) {
-        BinarySortNode temp = root;
-        while (null != temp) {
-            if (value == temp.data)
+    private BinarySortNode searchNodeTraverse(BinarySortNode root, int value) {
+        while (null != root) {
+            if (value == root.data)
                 break;
-            if (value < temp.data)
-                temp = temp.lchild;
+            if (value < root.data)
+                root = root.lchild;
             else
-                temp = temp.rchild;
+                root = root.rchild;
         }
-        return temp;
+        return root;
     }
 
 
