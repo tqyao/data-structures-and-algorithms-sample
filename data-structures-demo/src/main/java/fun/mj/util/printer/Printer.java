@@ -1,4 +1,4 @@
-package fun.mj.tree.printer;
+package fun.mj.util.printer;
 
 public abstract class Printer {	
 	/**

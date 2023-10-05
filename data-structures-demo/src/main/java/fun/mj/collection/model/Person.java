@@ -1,7 +1,7 @@
 /*
  * Copyright 2020-2030 The author personally reserves all rights.
  */
-package fun.mj.collection.map;
+package fun.mj.collection.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

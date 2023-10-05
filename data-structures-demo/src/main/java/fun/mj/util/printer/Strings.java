@@ -1,4 +1,4 @@
-package fun.mj.tree.printer;
+package fun.mj.util.printer;
 
 public class Strings {
 	public static String repeat(String string, int count) {
