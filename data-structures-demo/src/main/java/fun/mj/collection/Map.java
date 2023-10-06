@@ -13,6 +13,13 @@ public interface Map<K, V> {
 	
     public static abstract class Visitor<K, V> {
         public boolean stop;
+
+        /**
+         *
+         * @param key
+         * @param value
+         * @return true 停止遍历
+         */
         public abstract boolean visit(K key, V value);
     }
 }

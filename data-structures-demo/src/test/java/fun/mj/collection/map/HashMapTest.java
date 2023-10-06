@@ -5,6 +5,9 @@ import fun.mj.collection.model.Key;
 import fun.mj.collection.model.Person;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+
 class HashMapTest {
 
 
@@ -82,5 +85,25 @@ class HashMapTest {
         System.out.println(map.get(new Key(8)));
         System.out.println(map.size());
 
+    }
+
+    @Test
+    public void testAddNull() {
+        LinkedList list = new LinkedList();
+
+        list.offer(null);
+        System.out.println(list.isEmpty());
+        System.out.println(list.size());
+    }
+
+
+    @Test
+    public void testLinkHashMap() {
+        LinkedHashSet linkedHashSet = new LinkedHashSet();
+        linkedHashSet.add("aaa");
+        linkedHashSet.add("bbb");
+        linkedHashSet.add("ccc");
+        linkedHashSet.add("ddd");
+        System.out.println(linkedHashSet);
     }
 }
