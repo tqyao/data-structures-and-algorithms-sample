@@ -178,7 +178,7 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
      * @author tqyao
      * @create 2023/10/7 09:36
      */
-    private void sifDown200(int index) {
+    private void sifDown201(int index) {
         emptyCheck();
 
         // 堆顶元素值

@@ -1,13 +1,9 @@
 /*
  * Copyright 2020-2030 The author personally reserves all rights.
  */
-package sort2;
-
-import com.sun.org.apache.bcel.internal.generic.Select;
-import org.junit.Test;
+package fun.mj.sort;
 
 import java.util.Arrays;
-import java.util.stream.Stream;
 
 /**
  * @author tqyao
