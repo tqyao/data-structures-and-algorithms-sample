@@ -3,12 +3,18 @@
  */
 package fun.mj.sort;
 
+import fun.mj.heap.BinaryHeap;
 import fun.mj.sort.cmp.*;
 import fun.mj.util.ArrayUtil;
 import fun.mj.util.Asserts;
 import fun.mj.util.Integers;
+import fun.mj.util.printer.BinaryTrees;
 import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 /**
  * @author tqyao
@@ -86,6 +92,25 @@ public class Main {
         ArrayUtil.print(newArray);
 
         System.out.println(bubbleSort1);
+    }
+
+    @Test
+    public void testHeap(){
+
+        MyHeap<Integer> queue = new MyHeap<>((num1, num2) -> num2 - num1);
+
+
+        Integer[] integers = new Integer[]{3, 2, 1, 8, 9, 10};
+        queue.addAll(Arrays.asList(integers));
+        BinaryTrees.print(queue);
+        System.out.println(queue.peek());
+        System.out.println();
+
+        BinaryHeap<Integer> heap = new BinaryHeap<>(integers,(num1, num2) -> num1 - num2);
+        BinaryTrees.print(heap);
+
+
+
     }
 
 
